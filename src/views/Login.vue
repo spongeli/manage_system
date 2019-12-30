@@ -3,11 +3,15 @@
 		<div class="login_content">
 			<div class="login_login"><img src="../assets/logo.png" /></div>
 			<div class="form_body">
-				<el-form ref="form" :model="form">
+				<el-form ref="form" :rules="rules" :model="form">
 					<!-- 用户名 -->
-					<el-form-item><el-input prefix-icon="icon iconfont icon-yonghu" v-model="form.username" placeholder="请输入用户名"></el-input></el-form-item>
+					<el-form-item prop="username">
+						<el-input prefix-icon="icon iconfont icon-yonghu"  v-model="form.username" placeholder="请输入用户名"></el-input>
+					</el-form-item>
 					<!-- 密码 -->
-					<el-form-item><el-input prefix-icon="icon iconfont icon-suo" v-model="form.password" placeholder="请输入密码" show-password></el-input></el-form-item>
+					<el-form-item prop="password" >
+						<el-input prefix-icon="icon iconfont icon-suo" v-model="form.password" placeholder="请输入密码" show-password></el-input>
+					</el-form-item>
 					<el-form-item class="form_btns">
 						<el-button type="primary" @click="loginEvent">登陆</el-button>
 						<el-button type="info" @click="reset">重置</el-button>
@@ -19,31 +23,50 @@
 </template>
 
 <script>
-	import {requestPost} from "../network/request.js"
+import { requestPost } from '../network/request.js';
 export default {
-	name: "Login",
+	name: 'Login',
 	data() {
 		return {
 			form: {
-				username: "12321",
-				password: "123"
+				username: 'admin',
+				password: '123456'
+			},
+			rules:{
+				username:[
+					{ required: true, message: '请输入用户名', trigger: 'blur' }
+				],
+				password:[
+					{ required: true, message: '请输入密码', trigger: 'blur' }
+				]
 			}
-		}
-	},methods:{
-		loginEvent(){
-			// requestPost("user/login",this.form).then(data=>{
-			// 	console.log(data);
-			// });
-			this.$post("user/login",this.form).then(data=>{
-				if(!data) return;
-				console.log(data);
+		};
+	},
+	methods: {
+		loginEvent() {
+			// 表单验证
+			this.$refs['form'].validate(valid => {
+				if(!valid) return false;
+				this.$post('user/login', this.form).then(data => {
+					if (!data) return; //兼容错误的时候，data没有数据
+					// 登陆成功
+					// 保存登陆信息
+					this.$cookie.set('userinfo', JSON.stringify(data.data), { expires: 7, path: '/' });
+					this.$message({
+						message: '登陆成功',
+						type: 'success'
+					});
+					// 跳转页面
+					this.$router.replace('/home');
 				});
+			})
+			
 		},
-		reset(){
-			console.log("重置")
+		reset() {
+			this.$refs['form'].resetFields();
 		}
 	}
-}
+};
 </script>
 <style scoped>
 .login_body {

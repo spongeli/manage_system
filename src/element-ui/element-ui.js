@@ -8,7 +8,11 @@ import {
 	Form,
 	FormItem,
 	Input,
-	InputNumber
+	InputNumber,
+	Container,
+	Header,
+	Aside,
+	Main,
 } from 'element-ui';
 
 // 使用
@@ -18,5 +22,9 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
 Vue.use(InputNumber)
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Aside)
+Vue.use(Main)
 // 挂载
 Vue.prototype.$message = Message

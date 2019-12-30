@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import Cookies from 'js-cookie'
+import router from './router/router'
 import store from './store'
 
 require("./element-ui/element-ui.js")
@@ -10,7 +11,7 @@ Vue.config.productionTip = false
 import {request,requestPost} from "./network/request.js"
 Vue.prototype.$get = request
 Vue.prototype.$post = requestPost
-
+Vue.prototype.$cookie = Cookies
 
 new Vue({
   router,
