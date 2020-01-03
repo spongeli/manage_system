@@ -47,11 +47,12 @@ export default {
 			// 表单验证
 			this.$refs['form'].validate(valid => {
 				if(!valid) return false;
-				this.$post('user/login', this.form).then(data => {
+				this.$post('/user/login', this.form).then(data => {
 					if (!data) return; //兼容错误的时候，data没有数据
 					// 登陆成功
 					// 保存登陆信息
 					this.$cookie.set('userinfo', JSON.stringify(data.data), { expires: 7, path: '/' });
+					this.$cookie.set('token', data.data.token, { expires: 7, path: '/' });
 					this.$message({
 						message: '登陆成功',
 						type: 'success'

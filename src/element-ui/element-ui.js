@@ -13,6 +13,10 @@ import {
 	Header,
 	Aside,
 	Main,
+	Menu,
+	Submenu,
+	MenuItemGroup,
+	MenuItem
 } from 'element-ui';
 
 // 使用
@@ -26,5 +30,9 @@ Vue.use(Container)
 Vue.use(Header)
 Vue.use(Aside)
 Vue.use(Main)
+Vue.use(Menu)
+Vue.use(Submenu)
+Vue.use(MenuItemGroup)
+Vue.use(MenuItem)
 // 挂载
 Vue.prototype.$message = Message
