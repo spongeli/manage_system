@@ -15,3 +15,9 @@ html,body{
 .v-f-s{
 	justify-content: space-between;
 }
+.el-main{
+	background-color: #EAEDF1;
+}
+.el-breadcrumb{
+	margin-bottom: 15px;
+}

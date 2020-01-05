@@ -50,7 +50,7 @@ export default {
 				this.$post('/user/login', this.form).then(data => {
 					if (!data) return; //兼容错误的时候，data没有数据
 					// 登陆成功
-					// 保存登陆信息
+					// 保存登陆信息 expires 7 day
 					this.$cookie.set('userinfo', JSON.stringify(data.data), { expires: 7, path: '/' });
 					this.$cookie.set('token', data.data.token, { expires: 7, path: '/' });
 					this.$message({

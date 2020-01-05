@@ -11,7 +11,34 @@ const routes = [{
 	component: () => import("../views/Login")
 }, {
 	path: "/home",
-	component: () => import("../views/home/Home")
+	redirect: "/welcome",
+	component: () => import("../views/home/Home"),
+	children: [{
+			path: "/welcome",
+			component: () => import("@/components/main/WelCome.vue")
+		}, {
+			path: "/user_list",
+			component: () => import("@/views/home/user/UserList.vue")
+		}, {
+			path: "/role_list",
+			component: () => import("@/views/home/power/RoleList.vue")
+		}, {
+			path: "/power_list",
+			component: () => import("@/views/home/power/PowerList.vue")
+		}, {
+			path: "/goods_list",
+			component: () => import("@/views/home/goods/GoodsList.vue")
+		}, {
+			path: "/goods_classes",
+			component: () => import("@/views/home/goods/GoodsClasses.vue")
+		}, {
+			path: "/order_list",
+			component: () => import("@/views/home/order/OrderList.vue")
+		}, {
+			path: "/statistics_report",
+			component: () => import("@/views/home/data/StatisticsReport.vue")
+		}
+	]
 }]
 
 const router = new VueRouter({
@@ -22,16 +49,16 @@ const router = new VueRouter({
 
 // 设置导航守卫
 router.beforeEach((to, from, next) => {
-	let userinfo = Cookies.get("userinfo")
+	let userinfo = Cookies.get("token")
 	if (to.path != '/login') {
 		// 说明不是去登录页,判断是否登陆
 		if (userinfo) {
 			next()
 		} else {
-			router.replace("/login").catch(err => {});
+			router.replace("/login");
 		};
 	} else {
-		if(userinfo){
+		if (userinfo) {
 			router.replace("/home")
 		}
 	}
