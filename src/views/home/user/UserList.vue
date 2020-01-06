@@ -88,7 +88,7 @@ export default {
 			});
 		},
 		handleSizeChange(size) {
-			this.consumerInfo.pageSize = e;
+			this.consumerInfo.pageSize = size;
 			this.innitConsumerList();
 		},
 		handleCurrentChange(currentIndex) {

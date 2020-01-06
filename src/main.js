@@ -5,6 +5,7 @@ import router from './router/router'
 import store from './store'
 
 require("./element-ui/element-ui.js")
+require("./plugins/plugin.js")
 Vue.config.productionTip = false
 
 Vue.prototype.$cookie = Cookies
