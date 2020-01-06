@@ -5,205 +5,163 @@
 
 		<!-- 卡片视图区域 -->
 		<el-card class="box-card">
-			<tree-table ref="treeTable" sum-text="sum" index-text="#" :data="data" :columns="columns" :stripe="props.stripe"
-			 :border="props.border" :show-header="props.showHeader" :show-summary="props.showSummary" :show-row-hover="props.showRowHover"
-			 :show-index="props.showIndex" :tree-type="props.treeType" :is-fold="props.isFold" :expand-type="props.expandType"
-			 :selection-type="props.selectionType">
-				<template slot="$expand" scope="scope">
-					{{ `My name is ${scope.row.name},
-			           this rowIndex is ${scope.rowIndex}.`
-			         }}
+			<!-- 添加按钮 -->
+			<el-button type="primary" @click="cateDialog.isVisible = true">添加按钮</el-button>
+			<!-- 树形列表 -->
+			<tree-table
+				:data="cateData"
+				:columns="columns"
+				empty-text="--"
+				show-index
+				index-text="#"
+				stripe
+				border
+				children-prop="children"
+				:selection-type="false"
+				:tree-type="true"
+				:expand-type="false"
+			>
+				<template slot="isStatus" scope="scope">
+					<i class="el-icon-success" v-if="scope.row.status == 0"></i>
+					<i class="el-icon-error" v-else></i>
 				</template>
-				<template slot="likes" scope="scope">
-					{{ scope.row.likes.join(',') }}
+				<template slot="operation_tree" scope="scope">
+					<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteCate(scope)">删除</el-button>
+					<el-button type="primary" icon="el-icon-edit" size="mini" @click="editCate(scope)">编辑</el-button>
 				</template>
 			</tree-table>
 		</el-card>
+
+		<!-- 添加分类弹框 -->
+		<el-dialog title="添加分类" :visible.sync="cateDialog.isVisible" label-width="100px" @close="closeDialog">
+			<!-- 弹框中的内容 -->
+			<el-form ref="cateFormRef" :model="cateDialog.form" :rules="cateDialog.cateFormRules" label-width="80px">
+				<el-form-item label="分类名称" prop="categoryName"><el-input v-model="cateDialog.form.categoryName"></el-input></el-form-item>
+				<el-form-item label="父级分类">
+					<el-cascader
+						v-model="cateDialog.form.categoryParentId"
+						:options="cateData"
+						:props="{ expandTrigger: 'hover', value: 'categoryId', label: 'categoryName',checkStrictly:true }"
+						@change="handleChange"
+						clearable
+					></el-cascader>
+				</el-form-item>
+				<el-form-item label="排序级别" prop="categoryOrder">
+					<el-input v-model="cateDialog.form.categoryOrder" type="number"></el-input>
+				</el-form-item>
+				<el-form-item label="分类描述" prop="categoryDesc">
+					<el-input v-model="cateDialog.form.categoryDesc" type="textarea"></el-input>
+				</el-form-item>
+			</el-form>
+
+			<!-- 弹框下面的按钮 -->
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="cateDialog.isVisible = false">取 消</el-button>
+				<el-button type="primary" @click="submitCate">确 定</el-button>
+			</div>
+		</el-dialog>
 	</div>
 </template>
 
 <script>
-	import BreadCrumb from "@/components/main/common/bread-crumb.vue"
-	export default {
-		components: {
-			BreadCrumb
-		},
-		data() {
-			return {
-				props: {
-					stripe: false,
-					border: false,
-					showHeader: true,
-					showSummary: false,
-					showRowHover: true,
-					showIndex: false,
-					treeType: true,
-					isFold: true,
-					expandType: false,
-					selectionType: false,
+import BreadCrumb from '@/components/main/common/bread-crumb.vue';
+export default {
+	components: {
+		BreadCrumb
+	},
+	data() {
+		return {
+			cateDialog: {
+				isVisible: false,
+				form: {
+					categoryParentId: [],
+					categoryOrder:9
 				},
-				data: [{
-						name: 'Jack',
-						sex: 'male',
-						likes: ['football', 'basketball'],
-						score: 10,
-						children: [{
-								name: 'Ashley',
-								sex: 'female',
-								likes: ['football', 'basketball'],
-								score: 20,
-								children: [{
-										name: 'Ashley',
-										sex: 'female',
-										likes: ['football', 'basketball'],
-										score: 20,
-									},
-									{
-										name: 'Taki',
-										sex: 'male',
-										likes: ['football', 'basketball'],
-										score: 10,
-										children: [{
-												name: 'Ashley',
-												sex: 'female',
-												likes: ['football', 'basketball'],
-												score: 20,
-											},
-											{
-												name: 'Taki',
-												sex: 'male',
-												likes: ['football', 'basketball'],
-												score: 10,
-												children: [{
-														name: 'Ashley',
-														sex: 'female',
-														likes: ['football', 'basketball'],
-														score: 20,
-													},
-													{
-														name: 'Taki',
-														sex: 'male',
-														likes: ['football', 'basketball'],
-														score: 10,
-													},
-												],
-											},
-										],
-									},
-								],
-							},
-							{
-								name: 'Taki',
-								sex: 'male',
-								likes: ['football', 'basketball'],
-								score: 10,
-							},
-						],
-					},
-					{
-						name: 'Tom',
-						sex: 'male',
-						likes: ['football', 'basketball'],
-						score: 20,
-						children: [{
-								name: 'Ashley',
-								sex: 'female',
-								likes: ['football', 'basketball'],
-								score: 20,
-								children: [{
-										name: 'Ashley',
-										sex: 'female',
-										likes: ['football', 'basketball'],
-										score: 20,
-									},
-									{
-										name: 'Taki',
-										sex: 'male',
-										likes: ['football', 'basketball'],
-										score: 10,
-									},
-								],
-							},
-							{
-								name: 'Taki',
-								sex: 'male',
-								likes: ['football', 'basketball'],
-								score: 10,
-								children: [{
-										name: 'Ashley',
-										sex: 'female',
-										likes: ['football', 'basketball'],
-										score: 20,
-									},
-									{
-										name: 'Taki',
-										sex: 'male',
-										likes: ['football', 'basketball'],
-										score: 10,
-									},
-								],
-							},
-						],
-					},
-					{
-						name: 'Tom',
-						sex: 'male',
-						likes: ['football', 'basketball'],
-						score: 20,
-					},
-					{
-						name: 'Tom',
-						sex: 'male',
-						likes: ['football', 'basketball'],
-						score: 20,
-						children: [{
-								name: 'Ashley',
-								sex: 'female',
-								likes: ['football', 'basketball'],
-								score: 20,
-							},
-							{
-								name: 'Taki',
-								sex: 'male',
-								likes: ['football', 'basketball'],
-								score: 10,
-							},
-						],
-					},
-				],
-				columns: [{
-						label: 'name',
-						prop: 'name',
-						width: '400px',
-					},
-					{
-						label: 'sex',
-						prop: 'sex',
-						minWidth: '50px',
-					},
-					{
-						label: 'score',
-						prop: 'score',
-					},
-					{
-						label: 'likes',
-						prop: 'likes',
-						minWidth: '200px',
-						type: 'template',
-						template: 'likes',
-					},
-				],
-			}
-		},
-		computed: {
-			propList() {
-				return Object.keys(this.props).map(item => ({
-					name: item,
-				}));
+				cateFormRules: {
+					categoryName: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
+					categoryOrder:[{ required: true, message: '请输入类别排序级别', trigger: 'blur' }]
+				}
 			},
+			cateData: [],
+			columns: [
+				{
+					label: '分类名称',
+					prop: 'categoryName',
+					width: '150'
+				},
+				{
+					label: '是否有效',
+					prop: 'status',
+					width: '75px',
+					align: 'center',
+					type: 'template',
+					template: 'isStatus'
+				},
+				{
+					label: '描述',
+					prop: 'categoryDesc'
+				},
+				{
+					label: '排序级别',
+					prop: 'categoryOrder',
+					align: 'center',
+					width: '75px'
+				},
+				{
+					label: '操作',
+					type: 'template',
+					template: 'operation_tree'
+				}
+			]
+		};
+	},
+	created() {
+		this.innitCateList();
+	},
+	methods: {
+		async innitCateList() {
+			const { data: data } = await this.$get('/cate');
+			this.cateData = data;
+		},
+		editCate() {
+			console.log(`编辑分类`);
+		},
+		deleteCate() {
+			console.log(`删除分类`);
+		},
+		addCate() {
+			this.cateData.isVisible = true;
+		},
+		handleChange() {
+		},
+		closeDialog(){
+			this.$refs.cateFormRef.resetFields()
+			this.cateDialog.form.categoryParentId=[]
+		},
+		submitCate(){
+			this.$refs.cateFormRef.validate(valid => {
+				if(!valid) return
+				let parentId = this.cateDialog.form.categoryParentId[this.cateDialog.form.categoryParentId.length-1];
+				this.cateDialog.form.categoryParentId = parentId?parentId:0;
+				console.log(this.cateDialog.form)
+			})
 		}
-	}
+	},
+	computed: {}
+};
 </script>
 
-<style>
+<style scoped>
+.el-icon-success {
+	color: #20b2aa;
+}
+.el-icon-error {
+	color: red;
+}
+.el-button {
+	margin-bottom: 15px;
+}
+.el-cascader {
+	width: 100%;
+}
 </style>

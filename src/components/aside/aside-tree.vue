@@ -36,7 +36,7 @@ export default {
 		innitMenusTree() {
 			this.$get("/menus").then(res => {
 				this.menusTreeList = res.data;
-				console.log(this.menusTreeList)
+				// console.log(this.menusTreeList)
 			});
 		},
 		menusTreeOption(){
@@ -45,7 +45,7 @@ export default {
 	},
 	computed:{
 		activePath(){
-			console.log(this.$route.path);
+			// console.log(this.$route.path);
 			return this.$route.path;
 		}
 	}

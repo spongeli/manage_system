@@ -25,7 +25,9 @@ import {
 	Table,
 	TableColumn,
 	Switch,
-	Pagination
+	Pagination,
+	Dialog,
+	Cascader
 } from 'element-ui';
 
 // 使用
@@ -52,5 +54,7 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Switch)
 Vue.use(Pagination)
+Vue.use(Dialog)
+Vue.use(Cascader)
 // 挂载
 Vue.prototype.$message = Message

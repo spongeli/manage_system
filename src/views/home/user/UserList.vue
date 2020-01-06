@@ -96,8 +96,8 @@ export default {
 			this.innitConsumerList();
 		},
 		async changUserStatus(item) {
-			const {data} =  await this.$post(`/consumer/${item.userId}/upadte_status`, { status: item.statusMsg ? 0 : 1 });
-			this.$message.success("修改成功!");
+			const { data } = await this.$post(`/consumer/${item.userId}/upadte_status`, { status: item.statusMsg ? 0 : 1 });
+			this.$message.success('修改成功!');
 		}
 	}
 };
