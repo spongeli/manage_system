@@ -15,7 +15,7 @@ export function request(config) {
 		config.headers.token = this.$cookie.get("token")
 		return config
 	}, err => {
-		Vue.$message.error(err)
+		Message.error(err)
 	});
 
 	instance.interceptors.response.use(config => {
@@ -32,6 +32,7 @@ export function request(config) {
 		}
 	}, err => {
 		console.log(err)
+		Message.error("服务器繁忙");
 	});
 
 	// 发送网络请求 ==> 且返回的是一个Promise
@@ -66,6 +67,7 @@ export function requestPost(url, data) {
 		}
 	}, err => {
 		console.log(err)
+		Message.error("服务器繁忙");
 	});
 
 	// 发送网络请求 ==> 且返回的是一个Promise
