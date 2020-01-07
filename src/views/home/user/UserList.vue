@@ -81,10 +81,10 @@ export default {
 				}
 			};
 			this.$post('/consumer/shopping_users', data).then(res => {
-				res.data.list.forEach(item => {
+				res.list.forEach(item => {
 					item.statusMsg = item.status == 0;
 				});
-				this.consumerInfo = res.data;
+				this.consumerInfo = res;
 			});
 		},
 		handleSizeChange(size) {
