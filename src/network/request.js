@@ -7,7 +7,7 @@ axios.defaults.baseURL = 'http://127.0.0.1:8888/mall/manager/'
 axios.defaults.withCredentials = true;
 export function request(config) {
 	const instance = axios.create({
-		timeout: 5000,
+		timeout: 10000,
 	});
 
 	instance.interceptors.request.use(config => {
@@ -21,7 +21,7 @@ export function request(config) {
 	instance.interceptors.response.use(config => {
 		console.log(config.data);
 		if (config.data.status == 200) {
-			return config.data
+			return config.data.data
 		} else if (config.data.status == 300) {
 			// 登陆过期
 			Message.error(config.data.msg);
@@ -56,7 +56,7 @@ export function requestPost(url, data) {
 	instance.interceptors.response.use(config => {
 		console.log(config.data);
 		if (config.data.status == 200) {
-			return config.data
+			return config.data.data
 		} else if (config.data.status == 300) {
 			// 登陆过期
 			Message.error(config.data.msg);

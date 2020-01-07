@@ -27,7 +27,8 @@ import {
 	Switch,
 	Pagination,
 	Dialog,
-	Cascader
+	Cascader,
+	MessageBox
 } from 'element-ui';
 
 // 使用
@@ -58,3 +59,7 @@ Vue.use(Dialog)
 Vue.use(Cascader)
 // 挂载
 Vue.prototype.$message = Message
+Vue.prototype.$msgbox = MessageBox
+Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt

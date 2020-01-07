@@ -34,8 +34,9 @@ export default {
 	},
 	methods: {
 		innitMenusTree() {
-			this.$get("/menus").then(res => {
-				this.menusTreeList = res.data;
+			this.$get("/menus").then(data => {
+				if(!data) return
+				this.menusTreeList = data;
 				// console.log(this.menusTreeList)
 			});
 		},
