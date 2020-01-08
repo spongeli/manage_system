@@ -31,7 +31,8 @@ import {
 	MessageBox,
 	Alert,
 	Tabs,
-	TabPane
+	TabPane,
+	Tag
 } from 'element-ui';
 
 // 使用
@@ -63,6 +64,7 @@ Vue.use(Cascader)
 Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Tag)
 // 挂载
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox
