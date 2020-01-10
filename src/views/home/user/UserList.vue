@@ -8,7 +8,7 @@
 			<!-- 搜索区 -->
 			<el-row :gutter="18">
 				<el-col :span="7">
-					<el-input placeholder="请输入内容" v-model="searchText" class="input-with-select" clearable @clear="innitConsumerList">
+					<el-input placeholder="请输入内容" v-model="searchText" clearable @clear="innitConsumerList">
 						<el-button slot="append" icon="el-icon-search" @click="innitConsumerList"></el-button>
 					</el-input>
 				</el-col>
@@ -47,8 +47,8 @@
 				@size-change="handleSizeChange"
 				@current-change="handleCurrentChange"
 				:current-page="consumerInfo.pageNum"
-				:page-sizes="[10, 15, 20, 30]"
-				:page-size="1"
+				:page-sizes="[5, 10, 20, 30]"
+				:page-size="5"
 				layout="total, sizes, prev, pager, next, jumper"
 				:total="consumerInfo.total"
 			></el-pagination>

@@ -32,7 +32,12 @@ import {
 	Alert,
 	Tabs,
 	TabPane,
-	Tag
+	Tag,
+	Image,
+	Steps,
+	Step,
+	Tooltip,
+	Upload,
 } from 'element-ui';
 
 // 使用
@@ -65,6 +70,11 @@ Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Tag)
+Vue.use(Image)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Tooltip)
+Vue.use(Upload)
 // 挂载
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox

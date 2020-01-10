@@ -35,6 +35,9 @@ const routes = [{
 			path: "/goods_param",
 			component: () => import("@/views/home/goods/GoodsParam.vue")
 		}, {
+			path: "/add_goods",
+			component: () => import("@/views/home/goods/AddGoods.vue")
+		},{
 			path: "/order_list",
 			component: () => import("@/views/home/order/OrderList.vue")
 		}, {

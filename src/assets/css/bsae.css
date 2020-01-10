@@ -21,3 +21,16 @@ html,body{
 .el-breadcrumb{
 	margin-bottom: 15px;
 }
+.el-table,.el-steps,.el-tabs{
+	margin-top: 15px;
+}
+/* 删除的按钮颜色 */
+.el-icon-circle-close{
+	color: #FFFFFF;
+}
+.ql-editor{
+	min-height: 300px !important;
+}
+.el-dialog__body {
+	padding: 10px 20px !important;
+}
