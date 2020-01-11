@@ -41,7 +41,7 @@ export function request(config) {
 
 export function requestPost(url, data) {
 	const instance = axios.create({
-		timeout: 5000,
+		timeout: 10000,
 	});
 
 	instance.interceptors.request.use(config => {
