@@ -43,6 +43,9 @@ const routes = [{
 		}, {
 			path: "/statistics_report",
 			component: () => import("@/views/home/data/StatisticsReport.vue")
+		}, {
+			path: "/index_config",
+			component: () => import("@/views/home/config/IndexConfig.vue")
 		}
 	]
 }]

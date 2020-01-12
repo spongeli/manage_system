@@ -38,6 +38,7 @@ import {
 	Step,
 	Tooltip,
 	Upload,
+	Option
 } from 'element-ui';
 
 // 使用
@@ -75,6 +76,7 @@ Vue.use(Steps)
 Vue.use(Step)
 Vue.use(Tooltip)
 Vue.use(Upload)
+Vue.use(Option)
 // 挂载
 Vue.prototype.$message = Message
 Vue.prototype.$msgbox = MessageBox
