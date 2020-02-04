@@ -12,7 +12,7 @@
 						<el-table-column type="index" label="#"></el-table-column>
 						<el-table-column prop="imgSrc" label="图片" width="100px">
 							<template slot-scope="scope">
-								<el-image style="width: 80px;height: 50px;" :src="scope.row.imgSrc" :preview-src-list="scaningBanner"></el-image>
+								<el-image style="width: 80px;height: 50px;" :src="scope.row.imgSrc" :preview-src-list="[scope.row.imgSrc]"></el-image>
 							</template>
 						</el-table-column>
 						<el-table-column prop="level" label="级别" width="50px" align="center"></el-table-column>
@@ -23,14 +23,14 @@
 								<div style="width: 60px;height: 30px;" :style="{ 'background-color': scope.row.backGroundColor }"></div>
 							</template>
 						</el-table-column>
-						<el-table-column prop="status" label="状态">
+						<el-table-column prop="status" label="是否有效">
 							<template slot-scope="scope">
-								<el-switch v-model="scope.row.status"></el-switch>
+								<el-switch v-model="scope.row.status" @change="changStatus(scope.row)"></el-switch>
 							</template>
 						</el-table-column>
 						<el-table-column prop="clickStatus" label="是否关联超连接">
 							<template slot-scope="scope">
-								<el-switch v-model="scope.row.clickStatus"></el-switch>
+								<el-switch v-model="scope.row.clickStatus" @change="changStatus(scope.row)"></el-switch>
 							</template>
 						</el-table-column>
 						<el-table-column label="操作">
@@ -71,10 +71,10 @@
 					<el-input-number v-model="addbannerForm.level" :min="1" :max="10"></el-input-number>
 				</el-form-item>
 				<el-form-item label="是否上线">
-					<el-switch v-model="addbannerForm.status == 0" @change="statusChange"></el-switch>
+					<el-switch v-model="addbannerForm.status" @change="statusChange"></el-switch>
 				</el-form-item>
 				<el-form-item label="是否可跳转">
-					<el-switch v-model="addbannerForm.clickStatus == 0" @change="clickStatusChange"></el-switch>
+					<el-switch v-model="addbannerForm.clickStatus" @change="clickStatusChange"></el-switch>
 				</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -96,8 +96,6 @@
 				// 列表数据
 				bannerList: [],
 				recommendList: [],
-				scaningRecommend: [],
-				scaningBanner: [],
 
 				// 弹框数据
 				uploadImgUrl: 'http://127.0.0.1:8888/mall/manager/upload/img',
@@ -105,8 +103,8 @@
 				addbannerForm: {
 					imgSrc: '',
 					level: 9,
-					clickStatus: 0,
-					status: 0,
+					clickStatus: true,
+					status: true,
 					backGroundColor: ""
 				},
 				addbannerFormRules: {
@@ -133,11 +131,8 @@
 				this.$get('/index?scope=all').then(res => {
 					if (!res) return;
 					res.banner.forEach(item => {
-						if (item.type == 0) {
-							this.scaningBanner.push(item.imgSrc);
-						} else {
-							this.scaningRecommend.push(item.imgSrc);
-						}
+						item.status = item.status == 0
+						item.clickStatus = item.clickStatus == 0
 					});
 					this.bannerList = res.banner;
 					this.recommendList = res.recommend;
@@ -155,6 +150,10 @@
 				this.addDialogVisible = true;
 			},
 			handleAvatarSuccess(res, file) {
+				if (res.status != 200) {
+					this.$message.error("文件上传失败")
+					return
+				}
 				this.addbannerForm.imgSrc = res.data.url;
 			},
 			handleAvatarErr(file) {
@@ -173,19 +172,26 @@
 				console.log(this.addbannerForm);
 			},
 			statusChange(value) {
-				this.addbannerForm.status = value ? 0 : 1
+				console.log(value)
+				this.addbannerForm.status = value
 			},
+
 			clickStatusChange(value) {
-				this.addbannerForm.clickStatus = value ? 0 : 1
+				this.addbannerForm.clickStatus = value
 			},
 			// 提交
 			submitAdd() {
 				console.log(this.addbannerForm);
-				this.$post("/index", this.addbannerForm).then(res => {
+				let data = JSON.parse(JSON.stringify(this.addbannerForm))
+				data.status = data.status == 0
+				data.clickStatus = data.clickStatus == 0
+				
+				this.$post("/index", data).then(res => {
 					if (!res) return
 					this.$message.success("上传成功")
 					this.addDialogVisible = false
 					this.innitIndexConfig()
+					this.$refs.addbannerFormRef.resetFields();
 				})
 			},
 			deleteConfig(config) {
@@ -202,6 +208,16 @@
 				}).catch(() => {
 					this.$message.success('已取消删除!');
 				});
+			},
+			changStatus(row) {
+				let inparam = {
+					status: row.status ? 0 : 1,
+					clickStatus: row.clickStatus ? 0 : 1
+				}
+
+				this.$post(`/index/${row.id}/update`, inparam).then(res => {
+					console.log(res)
+				})
 			}
 		},
 		computed: {
