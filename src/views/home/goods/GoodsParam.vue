@@ -98,7 +98,9 @@
 		<el-dialog :title="dialogTitle" :visible.sync="addAttrDialogVisible" width="45%" @close="handleClose">
 			<!-- 添加名称的表单 -->
 			<el-form ref="addAttrFormRef" :model="addAttrForm" :rules="addAttrFormRules" label-width="100px">
-				<el-form-item :label="dialogTitle" prop="attrName"><el-input v-model="addAttrForm.attrName"></el-input></el-form-item>
+				<el-form-item :label="dialogTitle" prop="attrName">
+					<el-input v-model="addAttrForm.attrName"></el-input>
+				</el-form-item>
 			</el-form>
 
 			<!-- 底部按钮区 -->

@@ -30,6 +30,8 @@
 				<el-table-column label="商品分类" prop="cateName" width="150px"></el-table-column>
 				<el-table-column label="商品价格" prop="goodsPrice" width="80px" align="center"></el-table-column>
 				<el-table-column label="库存" prop="goodsCount" width="70px" align="center"></el-table-column>
+								<el-table-column label="浏览量" prop="scanCount" width="70px" align="center"></el-table-column>
+				<el-table-column label="销量" prop="salesCount" width="70px" align="center"></el-table-column>
 				<el-table-column label="状态" prop="goodsStatus" width="60px">
 					<template slot-scope="scope">
 						<el-switch v-model="scope.row.goodsStatus == 0" @change="changGoodsStatus(scope.row)"></el-switch>

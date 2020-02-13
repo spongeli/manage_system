@@ -1,5 +1,6 @@
 import Vue from "vue"
 import axios from 'axios'
+
 import {
 	Message
 } from 'element-ui';
@@ -45,6 +46,7 @@ export function requestPost(url, data) {
 	});
 
 	instance.interceptors.request.use(config => {
+		console.log(config);
 		console.log("URL=", config.url, ",data=", config.data)
 		//请求偷里添加 token字段 用于校验登陆状况
 		config.headers.token = this.$cookie.get("token");

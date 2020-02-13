@@ -69,7 +69,7 @@
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="商品图片" name="3">
-						<el-alert title="上传图片,首张为商品主图" type="warning" center show-icon :closable="false"></el-alert>
+						<el-alert title="上传图片,首张为商品主图,推荐上传大于[375*375]图片" type="warning" center show-icon :closable="false"></el-alert>
 						<el-upload
 							:action="uploadImgUrl"
 							:on-error="uploadErr"
@@ -84,6 +84,13 @@
 						<el-dialog :visible.sync="dialogVisible"><img width="100%" :src="dialogImageUrl" alt="" /></el-dialog>
 					</el-tab-pane>
 					<el-tab-pane label="商品内容" name="4">
+						<el-alert
+							title="推荐图片宽度为350px"
+							type="warning"
+							center
+							show-icon
+							:closable="false"
+						></el-alert>
 						<quill-editor v-model="goodsForm.goodsDetail"></quill-editor>
 						<el-button type="primary" style="margin-top: 15px;" @click="submit">添加商品</el-button>
 					</el-tab-pane>
@@ -226,7 +233,7 @@ export default {
 	margin-right: 15px;
 }
 .quill-editor {
-	width: 750px;
+	width: 382px;
 }
 .ql-editor {
 	min-height: 300px !important;

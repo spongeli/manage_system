@@ -5,67 +5,82 @@
 
 		<!-- 卡片区 -->
 		<el-card>
-			<el-tabs type="border-card">
-				<el-tab-pane label="轮播图">
-					<el-button type="primary" @click="addConfigBanner">添加轮播图</el-button>
-					<el-table :data="bannerList" stripe border>
-						<el-table-column type="index" label="#"></el-table-column>
-						<el-table-column prop="imgSrc" label="图片" width="100px">
-							<template slot-scope="scope">
-								<el-image style="width: 80px;height: 50px;" :src="scope.row.imgSrc" :preview-src-list="[scope.row.imgSrc]"></el-image>
-							</template>
-						</el-table-column>
-						<el-table-column prop="level" label="级别" width="50px" align="center"></el-table-column>
-						<el-table-column prop="goodsId" label="关联商品id"></el-table-column>
-						<el-table-column prop="goodsName" label="关联商品名称"></el-table-column>
-						<el-table-column prop="backGroundColor" label="背景色">
-							<template slot-scope="scope">
-								<div style="width: 60px;height: 30px;" :style="{ 'background-color': scope.row.backGroundColor }"></div>
-							</template>
-						</el-table-column>
-						<el-table-column prop="status" label="是否有效">
-							<template slot-scope="scope">
-								<el-switch v-model="scope.row.status" @change="changStatus(scope.row)"></el-switch>
-							</template>
-						</el-table-column>
-						<el-table-column prop="clickStatus" label="是否关联超连接">
-							<template slot-scope="scope">
-								<el-switch v-model="scope.row.clickStatus" @change="changStatus(scope.row)"></el-switch>
-							</template>
-						</el-table-column>
-						<el-table-column label="操作">
-							<template slot-scope="scope">
-								<el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
-								<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteConfig(scope.row)"></el-button>
-							</template>
-						</el-table-column>
-					</el-table>
-				</el-tab-pane>
-				<el-tab-pane label="热门推荐">热门推荐</el-tab-pane>
-			</el-tabs>
+
+			<el-button type="primary" @click="addConfigBanner">添加配置</el-button>
+			<el-table :data="configList" stripe border empty-text="--">
+				<el-table-column type="index" label="#"></el-table-column>
+				<el-table-column label="类型" width="100px" align="center">
+					<template slot-scope="scope">
+						{{scope.row.type == 0 ?'轮播图':scope.row.type == 1?"精品推荐":"活动专区"}}
+					</template>
+				</el-table-column>
+				<el-table-column prop="imgSrc" label="图片" width="100px">
+					<template slot-scope="scope">
+						<el-image style="width: 80px;height: 50px;" :src="scope.row.imgSrc" :preview-src-list="[scope.row.imgSrc]"></el-image>
+					</template>
+				</el-table-column>
+				<el-table-column prop="backGroundColor" label="背景色" >
+					<template slot-scope="scope">
+						<div style="width: 60px;height: 30px;" :style="{ 'background-color': scope.row.backGroundColor }"></div>
+					</template>
+				</el-table-column>
+				<el-table-column prop="level" label="级别" width="50px" align="center"></el-table-column>
+				<el-table-column prop="goodsId" label="关联商品id"></el-table-column>
+				<el-table-column prop="goodsName" label="关联商品名称"></el-table-column>
+				<el-table-column prop="activityName" label="活动名称"></el-table-column>
+				<el-table-column prop="activityPath" label="活动路由地址"></el-table-column>
+				<el-table-column prop="status" label="是否有效">
+					<template slot-scope="scope">
+						<el-switch v-model="scope.row.status" @change="changStatus(scope.row)"></el-switch>
+					</template>
+				</el-table-column>
+				<el-table-column prop="clickStatus" label="是否关联超连接">
+					<template slot-scope="scope">
+						<el-switch v-model="scope.row.clickStatus" @change="changStatus(scope.row)"></el-switch>
+					</template>
+				</el-table-column>
+				<el-table-column label="操作">
+					<template slot-scope="scope">
+						<el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteConfig(scope.row)"></el-button>
+					</template>
+				</el-table-column>
+			</el-table>
 		</el-card>
 
 		<!-- 添加图片对话框 -->
-		<el-dialog title="添加轮播图" :visible.sync="addDialogVisible" width="30%" :before-close="handleClose">
+		<el-dialog title="添加配置" :visible.sync="addDialogVisible" width="30%" :before-close="handleClose">
 			<el-form :model="addbannerForm" :rules="addbannerFormRules" ref="addbannerFormRef" label-width="100px">
-				<el-form-item label="轮播图" prop="imgSrc">
+				<el-form-item label="配置类型">
+					<el-select v-model="addbannerForm.type">
+						<el-option label="轮播图" value="0"></el-option>
+						<el-option label="精品推荐" value="1"></el-option>
+						<el-option label="活动专区" value="2"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="配置图片" prop="imgSrc" class="item-upload-container">
 					<el-upload class="avatar-uploader" :action="uploadImgUrl" :show-file-list="false" :on-success="handleAvatarSuccess"
 					 :on-error="handleAvatarErr" :headers="uploadHeader">
 						<img v-if="addbannerForm.imgSrc" :src="addbannerForm.imgSrc" class="avatar" />
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
 				</el-form-item>
-				<el-form-item label="背景颜色" prop="backGroundColor">
+				<el-form-item label="背景颜色" v-if="addbannerForm.type == 0" prop="backGroundColor">
 					<div class="v-f" style="line-height: 40px;">
 						<el-input placeholder="请输入RGB颜色" style="width: 150px;" v-model="addbannerForm.backGroundColor" clearable></el-input>
 						<div style="width: 30px;height: 20px;margin: auto 0;margin-left: 10px;" :style="{ 'background-color': addbannerForm.backGroundColor }"></div>
 					</div>
 				</el-form-item>
-				<el-form-item label="跳转产品">
+				<el-form-item v-if="addbannerForm.type != 2" label="跳转产品">
 					<el-select v-model="addbannerForm.goodsId" @change="changSelect" filterable remote reserve-keyword placeholder="请输入关键词"
 					 :remote-method="queryGoods" :loading="loading">
 						<el-option v-for="item in options" :key="item.goodsId" :label="item.goodsName" :value="item.goodsId"></el-option>
 					</el-select>
+				</el-form-item>
+				<el-form-item label="活动名称" v-if="addbannerForm.type == 2">
+					 <el-input v-model="addbannerForm.activityName"></el-input>
+				</el-form-item>
+				<el-form-item label="跳转路由" v-if="addbannerForm.type == 2">
+					 <el-input v-model="addbannerForm.activityPath"></el-input>
 				</el-form-item>
 				<el-form-item label="显示优先级">
 					<el-input-number v-model="addbannerForm.level" :min="1" :max="10"></el-input-number>
@@ -94,13 +109,13 @@
 		data() {
 			return {
 				// 列表数据
-				bannerList: [],
-				recommendList: [],
+				configList: [],
 
 				// 弹框数据
 				uploadImgUrl: 'http://127.0.0.1:8888/mall/manager/upload/img',
 				addDialogVisible: false,
 				addbannerForm: {
+					type: '0',
 					imgSrc: '',
 					level: 9,
 					clickStatus: true,
@@ -130,12 +145,11 @@
 			innitIndexConfig() {
 				this.$get('/index?scope=all').then(res => {
 					if (!res) return;
-					res.banner.forEach(item => {
+					res.forEach(item => {
 						item.status = item.status == 0
 						item.clickStatus = item.clickStatus == 0
 					});
-					this.bannerList = res.banner;
-					this.recommendList = res.recommend;
+					this.configList = res
 				});
 			},
 			handleClose(done) {
@@ -146,7 +160,7 @@
 					.catch(_ => {});
 			},
 			addConfigBanner() {
-				this.addbannerForm.type = 0
+				// this.addbannerForm.type = 0
 				this.addDialogVisible = true;
 			},
 			handleAvatarSuccess(res, file) {
@@ -183,9 +197,9 @@
 			submitAdd() {
 				console.log(this.addbannerForm);
 				let data = JSON.parse(JSON.stringify(this.addbannerForm))
-				data.status = data.status == 0
-				data.clickStatus = data.clickStatus == 0
-				
+				data.status = data.status ? 0 : 1
+				data.clickStatus = data.clickStatus ? 0 : 1
+				data.type = Number(data.type)
 				this.$post("/index", data).then(res => {
 					if (!res) return
 					this.$message.success("上传成功")
@@ -216,7 +230,11 @@
 				}
 
 				this.$post(`/index/${row.id}/update`, inparam).then(res => {
-					console.log(res)
+					if (res) {
+						this.$message.success("修改成功")
+					} else {
+						this.$message.error("修改成功")
+					}
 				})
 			}
 		},
@@ -231,6 +249,14 @@
 </script>
 
 <style>
+	.item-upload-container .el-form-item__label {
+		line-height: 120px;
+	}
+
+	.item-upload-container .avatar-uploader {
+		height: 120px;
+	}
+
 	.avatar-uploader .el-upload {
 		border: 1px dashed #d9d9d9;
 		border-radius: 6px;
