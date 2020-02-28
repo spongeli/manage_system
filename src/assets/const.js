@@ -6,4 +6,8 @@ export default {
 	ORDER_STATUS_SEND: 2,
 	ORDER_STATUS_CONFIRM: 3,
 	ORDER_STATUS_FINAL: 4,
+
+
+	// 上传图片地址
+	IMG_UPLOAD_URL: "http://127.0.0.1:8888/mall/manager/upload/img"
 }

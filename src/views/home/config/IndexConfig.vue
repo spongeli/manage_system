@@ -58,7 +58,7 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="配置图片" prop="imgSrc" class="item-upload-container">
-					<el-upload class="avatar-uploader" :action="uploadImgUrl" :show-file-list="false" :on-success="handleAvatarSuccess"
+					<el-upload class="avatar-uploader" :action="$const.IMG_UPLOAD_URL" :show-file-list="false" :on-success="handleAvatarSuccess"
 					 :on-error="handleAvatarErr" :headers="uploadHeader">
 						<img v-if="addbannerForm.imgSrc" :src="addbannerForm.imgSrc" class="avatar" />
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>

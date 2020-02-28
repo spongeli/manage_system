@@ -71,7 +71,7 @@
 					<el-tab-pane label="商品图片" name="3">
 						<el-alert title="上传图片,首张为商品主图,推荐上传大于[375*375]图片" type="warning" center show-icon :closable="false"></el-alert>
 						<el-upload
-							:action="uploadImgUrl"
+							:action="$const.IMG_UPLOAD_URL"
 							:on-error="uploadErr"
 							:on-success="uploadSuccess"
 							list-type="picture-card"
@@ -127,7 +127,6 @@ export default {
 			staticAttrList: [],
 
 			// 商品图片相关
-			uploadImgUrl: 'http://127.0.0.1:8888/mall/manager/upload/img',
 			dialogVisible: false,
 			dialogImageUrl: ''
 		};
