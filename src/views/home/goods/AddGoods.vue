@@ -33,8 +33,9 @@
 									:options="cateData"
 									v-model="goodsForm.cateId"
 									filterable
-									:props="{ value: 'categoryId', label: 'categoryName', expandTrigger: 'hover', checkStrictly: true }"
+									:props="{ value: 'categoryId', label: 'categoryName', expandTrigger: 'hover'}"
 									clearable
+									@change="changCate"
 								></el-cascader>
 							</template>
 						</el-form-item>
@@ -214,6 +215,12 @@ export default {
 					this.$router.push("/goods_list")
 				})
 			});
+		},
+		changCate(val){
+			if(val.length != 2){
+				this.$message.error(`商品分类必须选择二级分类`)
+				this.goodsForm.cateId = []
+			}
 		}
 	},
 	computed: {
