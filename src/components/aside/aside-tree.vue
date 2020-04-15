@@ -82,4 +82,7 @@ export default {
 .iconfont {
 	margin-right: 10px;
 }
+.el-submenu__title{
+	width: 200px;
+}
 </style>
