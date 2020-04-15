@@ -103,7 +103,7 @@
 						<el-dialog :visible.sync="dialogVisible"><img width="100%" :src="dialogImageUrl" alt="" /></el-dialog>
 					</el-tab-pane>
 					<el-tab-pane label="商品详情">
-						<quill-editor v-model="originalGoodsItem.goodsDetail"></quill-editor>
+						<quill-editor v-model="originalGoodsItem.goodsDetail" ref="myQuillEditor" :options="editorOption"></quill-editor>
 					</el-tab-pane>
 				</el-tabs>
 				<span slot="footer" class="dialog-footer">
@@ -116,6 +116,17 @@
 </template>
 
 <script>
+	import {
+		quillEditor,
+		Quill
+	} from 'vue-quill-editor'
+	import {
+		container,
+		ImageExtend,
+		QuillWatch
+	} from 'quill-image-extend-module'
+	Quill.register('modules/ImageExtend', ImageExtend)
+	
 import BreadCrumb from '@/components/main/common/bread-crumb.vue';
 export default {
 	components: {
@@ -146,7 +157,35 @@ export default {
 			uploadImgUrl: 'http://127.0.0.1:8888/mall/manager/upload/img',
 			fileList: [],
 			dialogImageUrl: '',
-			dialogVisible: false
+			dialogVisible: false,
+			
+			// 富文本相关
+			editorOption: {
+				modules: {
+					ImageExtend: {
+						loading: true,
+						name: 'file',
+						action: this.$const.IMG_UPLOAD_URL,
+						response: (res) => {
+							console.log(res);
+							return res.data.url
+						},
+						change: (xhr, formData) => {
+							console.log(xhr, formData);
+							xhr.setRequestHeader('token', this.$cookie.get('token'))
+							// formData.append('type', 1)
+						} // 可选参数 每次选择图片触发，也可用来设置头部，但比headers多了一个参数，可设置formData
+					},
+					toolbar: {
+						container: container,
+						handlers: {
+							'image': function() {
+								QuillWatch.emit(this.quill.id)
+							}
+						}
+					}
+				}
+			}
 		};
 	},
 	created() {
@@ -211,7 +250,6 @@ export default {
 		},
 		openUpdateGoodsDialog(item) {
 			this.updateGoodsDialogVisible = true;
-
 			// 分类信息处理
 			item.cateIds = this.gainCateIdsById(item.cateId);
 			let files = [];

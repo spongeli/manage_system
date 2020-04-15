@@ -69,7 +69,8 @@
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item v-if="editCateDialog.form.categoryParentId != null && editCateDialog.form.categoryParentId != ''" label="分类头图" class="cate_image_container">
+				<el-form-item v-if="editCateDialog.form.categoryParentId != null && editCateDialog.form.categoryParentId != ''"
+				 label="分类头图" class="cate_image_container">
 					<el-upload class="avatar-uploader" :action="$const.IMG_UPLOAD_URL" :show-file-list="false" :on-success="handleUpdateSuccess"
 					 :before-upload="beforeUpdateUpload" :headers="uploadHeader">
 						<img v-if="editCateDialog.form.categoryImg" :src="editCateDialog.form.categoryImg" class="avatar">
@@ -131,7 +132,7 @@
 				cateDialog: {
 					isVisible: false,
 					form: {
-						categoryParentId: '',
+						categoryParentId: null,
 						categoryOrder: 9,
 						categoryName: "",
 						categoryDesc: "",
@@ -268,7 +269,7 @@
 				}
 				this.cateDialog.form.categoryImg = res.data.url;
 			},
-			handleUpdateSuccess(res){
+			handleUpdateSuccess(res) {
 				if (res.status != 200) {
 					this.$message.error("文件上传失败")
 					return
@@ -278,8 +279,8 @@
 			beforeAvatarUpload(res, file) {
 				console.log(res, file);
 			},
-			beforeUpdateUpload(){
-				
+			beforeUpdateUpload() {
+
 			}
 		},
 		computed: {

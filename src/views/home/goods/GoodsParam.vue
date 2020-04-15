@@ -281,7 +281,7 @@ export default {
 		// 提交修改标签
 		submitTagList(attr) {
 			let param = attr.attrListMsg ? attr.attrListMsg.join(',') : '';
-			this.$post(`/attr/${attr.attrId}/save_param/${param}`).then(res => {
+			this.$post(`/attr/${attr.attrId}/save_param?param=${param}`).then(res => {
 				this.$message.success('修改属性成功！');
 			});
 		},
