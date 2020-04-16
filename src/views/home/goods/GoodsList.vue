@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="goods_list_container">
 		<!-- 面包屑导航区 -->
 		<bread-crumb :breadcrumbItem="['商品管理', '商品列表']"></bread-crumb>
 
@@ -418,8 +418,13 @@ export default {
 };
 </script>
 
-<style scoped>
-.el-cascader {
-	width: 300px;
-}
+<style lang="scss">
+	.goods_list_container{
+		.el-cascader {
+			width: 300px;
+		}
+		.el-transfer-panel__filter {
+			margin: 10px 0 !important;
+		}
+	}
 </style>

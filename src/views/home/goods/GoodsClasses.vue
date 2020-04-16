@@ -29,8 +29,8 @@
 					<el-input v-model="cateDialog.form.categoryName"></el-input>
 				</el-form-item>
 				<el-form-item label="父级分类">
-					<el-select v-model="cateDialog.form.categoryParentId" placeholder="请选择">
-						<el-option clearable v-for="item in cateData" :key="item.categoryId" :label="item.categoryName" :value="item.categoryId">
+					<el-select v-model="cateDialog.form.categoryParentId" placeholder="请选择" clearable>
+						<el-option v-for="item in cateData" :key="item.categoryId" :label="item.categoryName" :value="item.categoryId">
 						</el-option>
 					</el-select>
 				</el-form-item>

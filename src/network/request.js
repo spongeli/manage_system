@@ -12,7 +12,7 @@ export function request(config) {
 	});
 
 	instance.interceptors.request.use(config => {
-		console.log("URL=", config.url, ",data=", config.data);
+		// console.log("URL=", config.url, ",data=", config.data);
 		config.headers.token = this.$cookie.get("token")
 		return config
 	}, err => {
@@ -20,7 +20,7 @@ export function request(config) {
 	});
 
 	instance.interceptors.response.use(config => {
-		console.log(config.data);
+		// console.log(config.data);
 		if (config.data.status == 200) {
 			return config.data.data
 		} else if (config.data.status == 300) {
@@ -46,8 +46,8 @@ export function requestPost(url, data) {
 	});
 
 	instance.interceptors.request.use(config => {
-		console.log(config);
-		console.log("URL=", config.url, ",data=", config.data)
+		// console.log(config);
+		// console.log("URL=", config.url, ",data=", config.data)
 		//请求偷里添加 token字段 用于校验登陆状况
 		config.headers.token = this.$cookie.get("token");
 		return config
@@ -56,7 +56,7 @@ export function requestPost(url, data) {
 	});
 
 	instance.interceptors.response.use(config => {
-		console.log(config.data);
+		// console.log(config.data);
 		if (config.data.status == 200) {
 			return config.data.data
 		} else if (config.data.status == 300) {

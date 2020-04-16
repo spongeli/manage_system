@@ -55,7 +55,7 @@ export default {
 	},
 	computed: {
 		activePath() {
-			console.log(this.$route.path);
+			// console.log(this.$route.path);
 			let path = this.$route.path;
 			if(path == '/add_goods'){
 				path = '/goods_list'
