@@ -86,6 +86,15 @@
 						<el-form-item label="商品重量(g)" prop="goodsWeight"><el-input v-model.number="originalGoodsItem.goodsWeight"></el-input></el-form-item>
 						<el-form-item label="商品数量" prop="goodsCount"><el-input v-model.number="originalGoodsItem.goodsCount"></el-input></el-form-item>
 					</el-tab-pane>
+					
+					<el-tab-pane label="商品参数">
+<!-- 						<el-transfer filterable filter-placeholder="请输入配置名称" v-model="goodsForm.dynamicParam" :data="dynamicAttrList" :titles="[`数据源`,`选择项`]"
+								 :props="{
+							key: 'attrId',
+							label: 'attrName'
+						}"></el-transfer>-->
+					</el-tab-pane> 
+
 
 					<el-tab-pane label="商品主图">
 						<el-upload
@@ -158,6 +167,11 @@ export default {
 			fileList: [],
 			dialogImageUrl: '',
 			dialogVisible: false,
+			
+			// 属性相关
+			dynamicAttrList: [],
+			staticAttrList: [],
+			serviceAttrList: [],
 			
 			// 富文本相关
 			editorOption: {
@@ -252,6 +266,8 @@ export default {
 			this.updateGoodsDialogVisible = true;
 			// 分类信息处理
 			item.cateIds = this.gainCateIdsById(item.cateId);
+			
+			// 商品头图
 			let files = [];
 			item.goodsHeaderImg.split(',').forEach(item => {
 				files.push({
@@ -259,6 +275,31 @@ export default {
 				});
 			});
 			this.fileList = files;
+			
+			// 属性
+			this.$post(`/attr/dynamic`, queryForm).then(res => {
+				if (!res) return;
+				res.forEach(item => {
+					item.attrName += `[${item.attrValue}]`
+				})
+				this.dynamicAttrList = res;
+			});
+			this.$post(`/attr/statics`, queryForm).then(res => {
+				if (!res) return;
+				res.forEach(item => {
+					item.attrName += `[${item.attrValue}]`
+				})
+				this.staticAttrList = res;
+			});
+			this.$post(`/attr/service`, queryForm).then(res => {
+				if (!res) return;
+				res.forEach(item => {
+					item.attrName += `[${item.attrValue}]`
+				})
+				this.serviceAttrList = res;
+			});
+			
+			console.log(item);
 			this.originalGoodsItem = item;
 			this.originalGoodsItem.goodsHeaderImgList = item.goodsHeaderImg.split(',');
 			console.log(item);
