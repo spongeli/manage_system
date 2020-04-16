@@ -87,12 +87,26 @@
 						<el-form-item label="商品数量" prop="goodsCount"><el-input v-model.number="originalGoodsItem.goodsCount"></el-input></el-form-item>
 					</el-tab-pane>
 					
-					<el-tab-pane label="商品参数">
-<!-- 						<el-transfer filterable filter-placeholder="请输入配置名称" v-model="goodsForm.dynamicParam" :data="dynamicAttrList" :titles="[`数据源`,`选择项`]"
+					<el-tab-pane label="商品动态参数">
+						<el-transfer filterable filter-placeholder="请输入配置名称" v-model="originalGoodsItem.dynamicParamList" :data="dynamicAttrList" :titles="[`数据源`,`选择项`]"
 								 :props="{
 							key: 'attrId',
 							label: 'attrName'
-						}"></el-transfer>-->
+						}"></el-transfer>
+					</el-tab-pane> 
+					<el-tab-pane label="商品静态参数">
+						<el-transfer filterable filter-placeholder="请输入配置名称" v-model="originalGoodsItem.staticsParamList" :data="staticAttrList" :titles="[`数据源`,`选择项`]"
+								 :props="{
+							key: 'attrId',
+							label: 'attrName'
+						}"></el-transfer>
+					</el-tab-pane> 
+					<el-tab-pane label="商品服务参数">
+						<el-transfer filterable filter-placeholder="请输入配置名称" v-model="originalGoodsItem.serviceParamList" :data="serviceAttrList" :titles="[`数据源`,`选择项`]"
+								 :props="{
+							key: 'attrId',
+							label: 'attrName'
+						}"></el-transfer>
 					</el-tab-pane> 
 
 
@@ -277,6 +291,9 @@ export default {
 			this.fileList = files;
 			
 			// 属性
+			let queryForm = {
+				queryAll: true
+			}
 			this.$post(`/attr/dynamic`, queryForm).then(res => {
 				if (!res) return;
 				res.forEach(item => {
@@ -299,10 +316,9 @@ export default {
 				this.serviceAttrList = res;
 			});
 			
-			console.log(item);
 			this.originalGoodsItem = item;
 			this.originalGoodsItem.goodsHeaderImgList = item.goodsHeaderImg.split(',');
-			console.log(item);
+			console.log(this.originalGoodsItem);
 		},
 		deleteGoods(item) {
 			this.$confirm('此操作将永久删除商品, 是否继续?', '提示', {
@@ -380,6 +396,9 @@ export default {
 				var updateItem  = JSON.parse(JSON.stringify(this.originalGoodsItem))
 				updateItem.goodsHeaderImg = updateItem.goodsHeaderImgList.join(",")
 				updateItem.cateId = updateItem.cateIds[updateItem.cateIds.length-1]
+				updateItem.dynamicParam = updateItem.dynamicParamList
+				updateItem.staticsParam = updateItem.staticsParamList
+				updateItem.serviceParam = updateItem.serviceParamList
 				console.log(updateItem);
 				this.$post(`/goods/update/${updateItem.goodsId}`,updateItem).then(res=>{
 					if(!res) return
