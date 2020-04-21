@@ -7,7 +7,7 @@
 		<el-card>
 			<el-row :gutter="15">
 				<el-col :span="8">
-					<el-input placeholder="请输入内容" v-model="searchText" clearable class=""><el-button slot="append" icon="el-icon-search" @click="innitGoodsData"></el-button></el-input>
+					<el-input placeholder="请输入内容" v-model="dataForm.search" clearable class=""><el-button slot="append" icon="el-icon-search" @click="innitGoodsData"></el-button></el-input>
 				</el-col>
 				<el-col :span="2"><el-button type="primary" @click="addGoods">添加商品</el-button></el-col>
 			</el-row>
@@ -49,9 +49,9 @@
 			<el-pagination
 				@size-change="handleSizeChange"
 				@current-change="handleCurrentChange"
-				:current-page="goodsData.pageNum"
+				:current-page="dataForm.pageInparam.pageCurrentPage"
 				:page-sizes="[5, 10, 20, 30]"
-				:page-size="goodsData.pageSize"
+				:page-size="dataForm.pageInparam.pageSize"
 				layout="total, sizes, prev, pager, next, jumper"
 				:total="goodsData.total"
 			></el-pagination>
@@ -158,7 +158,13 @@ export default {
 	data() {
 		return {
 			// 初始化列表参数
-			searchText: '',
+			dataForm:{
+				search:"",
+				pageInparam:{
+					pageSize:5,
+					pageCurrentPage:1
+				}
+			},
 			goodsData: {},
 
 			// 修改商品数据信息
@@ -236,14 +242,7 @@ export default {
 			this.innitGoodListData();
 		},
 		innitGoodListData(){
-			let data = {
-				search: this.searchText,
-				pageInparam: {
-					pageSize: this.goodsData.pageSize,
-					pageCurrentPage: this.goodsData.pageNum
-				}
-			};
-			this.$post(`/goods`, data).then(data => {
+			this.$post(`/goods`, this.dataForm).then(data => {
 				if (!data) return;
 				this.goodsData = data;
 			});
@@ -255,12 +254,12 @@ export default {
 		// 分页插件相关
 		// 选择每页大小
 		handleSizeChange(size) {
-			this.goodsData.pageSize = size;
+			this.dataForm.pageInparam.pageSize = size
 			this.innitGoodsData();
 		},
 		// 改变页数
 		handleCurrentChange(currentPage) {
-			this.goodsData.pageNum = currentPage;
+			this.dataForm.pageInparam.pageCurrentPage = currentPage;
 			this.innitGoodsData();
 		},
 		getGoodsFirstImg(item) {
